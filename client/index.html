@@ -5,9 +5,25 @@
   </head>
   <body class="container">
     <button id="complimentButton">Get a compliment</button>
+    <button id="fortuneButton">Get a fortune</button>
+    <button id="getElements">Get Elements</button>
+    <button id="postElement">Add Element</button>
+    <button id="modifyElement">Modify an Element</button>
+    <button id="deleteElement">Delete an Element</button>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
+      //get elements
+      let postElement = document.getElementById("postElement");
+      let modifyElement = document.getElementById("modifyElement");
+      let deleteElement = document.getElementById("deleteElement");
+      let getElement = document.getElementById("getElements");
+      let elementLength = 3;
+
+
+      let randomNumber = Math.floor(Math.random() * elementLength);
+
+
       document.getElementById("complimentButton").onclick = function () {
         axios.get("http://localhost:4000/api/compliment/")
             .then(function (response) {
@@ -15,6 +31,63 @@
               alert(data);
             });
       };
+
+      document.getElementById("fortuneButton").onclick = function () {
+        axios.get("http://localhost:4000/api/fortune/")
+        .then(function (response) {
+          const data = response.data;
+          alert(data);
+        });
+      };
+
+      //functions
+
+      function getElements(){
+        axios.get("http://localhost:4000/api/messages/")
+        .then( res => {
+          console.log(res.data)
+        })
+        .catch(err => {
+          console.log(err.data);
+        })
+      }
+
+      function addElement(){
+        axios.post("http://localhost:4000/api/messages/", { message: "New Element"})
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch(err => {
+          console.log(err.data)
+        })
+      }
+
+      function changeElement(){
+        axios.put("http://localhost:4000/api/messages/message1", { message: "Changed"})
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch(err => {
+          console.log(err.data);
+        })
+      }
+
+      function removeElement(){
+        axios.delete(`http://localhost:4000/api/messages/message${randomNumber}`)
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch (err => {
+          console.log(err.data);
+        })
+      }
+
+      //event listeners
+      postElement.addEventListener('click', addElement);
+      modifyElement.addEventListener('click', changeElement);
+      deleteElement.addEventListener('click', removeElement);
+      getElement.addEventListener('click', getElements);
+
     </script>
   </body>
 </html>
