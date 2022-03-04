@@ -57,30 +57,24 @@ app.post("/api/messages", (req, res) => {
   res.status(200).send(numbers);
 });
 
-app.put("/api/messages/:message", (req, res) => {
-  let currentMessage = req.params.message;
+app.put("/api/messages/:index", (req, res) => {
+  let currentIndex = req.params.index;
   let newMessage = req.body.message;
-  for(let i = 0; i < numbers.length; i++){
-    if(numbers[i].message === currentMessage){
-      numbers[i].message = newMessage;
+      numbers[currentIndex].message = newMessage;
       res.status(200).send(numbers);
       return;
-    }
-  }
-  res.status(400).send('Cannot find message that matches');
 });
 
-app.delete("/api/messages/:message", (req, res) => {
-  let currentMessage = req.params.message;
-  for(let i = 0; i < numbers.length; i++){
-    if(numbers[i].message === currentMessage){
-      numbers.splice(i, 1);
+app.delete("/api/messages/:index", (req, res) => {
+  let currentIndex = req.params.index;
+      numbers.splice(currentIndex, 1);
       res.status(200).send(numbers);
-      return;
-    }
-  }
-  res.status(400).send('Cannot find message that matches');
-})
+});
+
+app.get("/api/messages/", (req, res) => {
+  let numbersLength = numbers.length;
+  res.status(200).send(numbersLength);
+});
 
 
 

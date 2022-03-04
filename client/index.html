@@ -21,7 +21,7 @@
       let elementLength = 3;
 
 
-      let randomNumber = Math.floor(Math.random() * elementLength);
+      
 
 
       document.getElementById("complimentButton").onclick = function () {
@@ -63,7 +63,9 @@
       }
 
       function changeElement(){
-        axios.put("http://localhost:4000/api/messages/message1", { message: "Changed"})
+        getLength();
+        let randomNumber = Math.floor(Math.random() * elementLength);
+        axios.put(`http://localhost:4000/api/messages/${randomNumber}`, { message: "Changed"})
         .then((res) => {
           console.log(res.data);
         })
@@ -73,12 +75,21 @@
       }
 
       function removeElement(){
-        axios.delete(`http://localhost:4000/api/messages/message${randomNumber}`)
+        getLength();
+        let randomNumber = Math.floor(Math.random() * elementLength);
+        axios.delete(`http://localhost:4000/api/messages/${randomNumber}`)
         .then(res => {
           console.log(res.data);
         })
         .catch (err => {
           console.log(err.data);
+        })
+      }
+
+      function getLength(){
+        axios.get("http://localhost:4000/api/messages/")
+        .then(res => {
+          elementLength = res.data;
         })
       }
 
